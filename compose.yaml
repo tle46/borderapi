@@ -1,0 +1,19 @@
+services:
+  border-api:
+    build: .
+    restart: unless-stopped
+    environment:
+      ROOT_PATH: /border
+      CORS_ORIGINS: "${CORS_ORIGINS:-}"
+    networks:
+      - caddy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  caddy:
+    external: true
+    name: "${CADDY_NETWORK:?Set CADDY_NETWORK to the existing Caddy Docker network}"

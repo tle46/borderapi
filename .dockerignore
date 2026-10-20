@@ -1,0 +1,9 @@
+.git
+.venv
+venv
+.env
+.env.*
+__pycache__
+*.py[cod]
+*.log
+bordermapping copy.json
