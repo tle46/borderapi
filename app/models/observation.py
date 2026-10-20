@@ -7,14 +7,14 @@ class Observation:
     border_id: str
     border_name: str
 
-    # US -> Canada (CBP)
+    # US -> Canada (CBSA)
     uscan_passenger_lanes: int | None = None
     uscan_passenger_delay: int | None = None
     uscan_commercial_lanes: int | None = None
     uscan_commercial_delay: int | None = None
     uscan_updated: datetime | None = None
 
-    # Canada -> US (CBSA)
+    # Canada -> US (CBP)
     canus_passenger_lanes: int | None = None
     canus_passenger_delay: int | None = None
     canus_commercial_lanes: int | None = None
@@ -44,3 +44,4 @@ def to_utc(value: datetime | None) -> datetime | None:
         return value.replace(tzinfo=timezone.utc)
 
     return value.astimezone(timezone.utc)
+

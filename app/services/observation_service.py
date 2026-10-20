@@ -12,15 +12,15 @@ class ObservationService:
     Joins CBP and CBSA data using bordermapping.json.
 
     CBP:
-        US -> Canada
+        Canada -> US
 
     CBSA:
-        Canada -> US
+        US -> Canada
 
     CBSA flow fields are delay times in minutes:
 
-        travellers_flow -> canus_passenger_delay
-        commercial_flow -> canus_commercial_delay
+        travellers_flow -> uscan_passenger_delay
+        commercial_flow -> uscan_commercial_delay
 
     All datetimes exposed by Observation are UTC.
     """
@@ -62,7 +62,7 @@ class ObservationService:
         observations: dict[str, Observation] = {}
 
         # ----------------------------------------------------------
-        # CBP: US -> Canada
+        # CBP: Canada -> US
         # ----------------------------------------------------------
 
         for cbp in cbp_list:
@@ -86,7 +86,7 @@ class ObservationService:
             self._apply_cbp(observation, cbp)
 
         # ----------------------------------------------------------
-        # CBSA: Canada -> US
+        # CBSA: US -> Canada
         # ----------------------------------------------------------
 
         for cbsa in cbsa_list:
@@ -189,22 +189,22 @@ class ObservationService:
             "standard_lanes",
         )
 
-        observation.uscan_passenger_lanes = self._get(
+        observation.canus_passenger_lanes = self._get(
             passenger_standard,
             "lanes_open",
         )
 
-        observation.uscan_passenger_delay = self._get(
+        observation.canus_passenger_delay = self._get(
             passenger_standard,
             "delay_minutes",
         )
 
-        observation.uscan_commercial_lanes = self._get(
+        observation.canus_commercial_lanes = self._get(
             commercial_standard,
             "lanes_open",
         )
 
-        observation.uscan_commercial_delay = self._get(
+        observation.canus_commercial_delay = self._get(
             commercial_standard,
             "delay_minutes",
         )
@@ -223,7 +223,7 @@ class ObservationService:
                 tzinfo=self.CBP_TIMEZONE,
             )
 
-            observation.uscan_updated = to_utc(cbp_datetime)
+            observation.canus_updated = to_utc(cbp_datetime)
 
     # --------------------------------------------------------------
     # CBSA -> Observation
@@ -247,13 +247,13 @@ class ObservationService:
         remain None.
         """
 
-        observation.canus_passenger_delay = getattr(
+        observation.uscan_passenger_delay = getattr(
             cbsa,
             "travellers_flow",
             None,
         )
 
-        observation.canus_commercial_delay = getattr(
+        observation.uscan_commercial_delay = getattr(
             cbsa,
             "commercial_flow",
             None,
@@ -265,7 +265,7 @@ class ObservationService:
             None,
         )
 
-        observation.canus_updated = to_utc(
+        observation.uscan_updated = to_utc(
             cbsa_updated
         )
 
@@ -319,3 +319,4 @@ def build_observations(
         cbsa_list=cbsa_list,
         observation_time=observation_time,
     )
+
