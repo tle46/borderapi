@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+import os
 from pathlib import Path
 from dataclasses import asdict
 
@@ -12,6 +13,7 @@ import app.services.observation_service as observation_service
 
 
 app = FastAPI(
+    root_path=os.environ.get("ROOT_PATH", ""),
     title="US-Canada Border API",
     description="API for US-Canada border crossing observations.",
     version="1.0.0",
